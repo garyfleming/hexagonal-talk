@@ -7,3 +7,24 @@ The slides are available in the original Markdown format (hexagonal-ds.md), whic
 I've expanded the speaker notes from the original short note form to (still short) sentences explaining the ideas more fully.
 
 If you don't have access to Deckset but still want the visuals alongside the notes, I've exported the slides as a PDF.
+
+I'm also including the further reading and acknowledgements below, for your convenience.
+
+---
+
+## Learn More
+
+- [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) by Alistair Cockburn 
+- [Architecture, The Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) by "Uncle" Bob Martin
+- [Software is an Engineering Discipline](https://www.youtube.com/watch?v=zDEpeWQHtFU) by Glenn Vanderburg
+
+---
+
+## Acknowledgements
+
+- CodeCraft logo by Gary Fleming (copyright CodeCraft)
+- [Super Hexagon](http://superhexagon.com/) by [Terry Cavanagh](https://twitter.com/terrycavanagh), [CC-BY-SA-3.0](http://creativecommons.org/licenses/by-sa/3.0/)
+- [Entanglement](https://www.flickr.com/photos/dogbomb/526961087), [Simon Brass](https://www.flickr.com/photos/dogbomb/), [CC-BY-SA-2.0](https://creativecommons.org/licenses/by/2.0/)
+- Nice Port by Myrabella Photo: [Myrabella](https://commons.wikimedia.org/wiki/User:Myrabella) / [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page) / [CC-BY-SA-3.0](http://creativecommons.org/licenses/by-sa/3.0/) & [GFDL](https://en.wikipedia.org/wiki/GFDL)
+- [Rainer Knäpper](https://de.wikipedia.org/wiki/User:Smial), Adapter DVI to VGA, 15/05/06. [Free Art License](http://artlibre.org/licence/lal/en/)
+- [Mark Schellhase](https://commons.wikimedia.org/wiki/User:Mschel), Old Chain, [CC-BY-SA-3.0-Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
