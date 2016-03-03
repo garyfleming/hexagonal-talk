@@ -10,6 +10,18 @@ If you don't have access to Deckset but still want the visuals alongside the not
 
 I'm also including the further reading and acknowledgements below, for your convenience.
 
+## TODO
+
+- Introduce the idea of the software engineering metaphor
+- More explicit examples as we go (ports, adapters etc). Maybe introduce the main example at the start.
+- Add in parts to explain cross cutting domain entities vs bounded context entities
+- Possibly talk a little about DDD and bounded contexts
+- Relate to Dependency Inversion Principle
+- Explain how it doesn't necessarily mean more code
+- Bonus: caching -- obvious where it fits: the edges.
+- Be explicit about what actions can take after hearing the principles
+
+
 ---
 
 ## Learn More
