@@ -8,7 +8,7 @@
 
 @garyfleming
 
-^ Software & Agile Consultant, Software Developer for a long time
+^ Software & Agile Consultant, Software Developer for a long time.
 
 ---
 
@@ -48,6 +48,14 @@ Integration tests need more of the stack, get slower over time.
 
 ---
 
+## Engineering Metaphor
+
+^ When we talk about and think about software, we often use the engineering metaphor: software engineering. There are lots of issues with this as practiced, see Joe's talk "Are we really engineers?", but I'm going to be using the metaphor, but not defending it. That is, there are elements of software that are analogous to engineering: there are aspects of structure and design to what we do, and there are parts of engineering that are as exploratory as many software projects.
+
+![](Gaoliang_Bridge.jpg)
+
+---
+
 ## Idea 1: Blueprints
 
 ^ In his 2011 Ruby Midwest keynote, "Architecture: The Lost Years", Bob Martin argues that intent is lost on most projects from the get go. 
@@ -58,11 +66,26 @@ Integration tests need more of the stack, get slower over time.
 
 ## A Guessing Game...
 
-![inline](app-layout.png)
+![inline](app-layout.png) ![inline](guess-java.png)
 
 ^ This is the top level folder of a real world application: What is does this application do?
 "Why does the top-level directory structure communicate that information to you?" i.e. that this is a Rails app (or any tech)
 To be clear, I don't want to pick on rails. Other frameworks and technologies are much the same. Open up a typical J2EE app and you'll know that's what it is, but not what it does.
+
+---
+
+## Animal Shelter
+
+- Adding animals
+- Fostering details
+- Adoption lists
+- Healthcare management
+- Follow-up visits
+- Letting people know new animals are up for adoption
+
+^ Our domain is adding animals, taking fostering details, maintaining a list of who has adopted an animal, managing healthcare, doing follow-up visits, letting people know about new animals that are up for adoption. What in those previous pictures helped tell us that?
+
+![](Oscar.jpg)
 
 --- 
 
@@ -76,6 +99,22 @@ An earlier talk I'd seen by someone else (Glenn Vanderburg?), had argued that if
 Through this lens, it is obvious that the artifacts that we produce are essentially blueprints. The purpose of blueprints is to show, at varying levels of abstraction, what it is we're trying to build (and how); but not the materials used (not initially, anyway).
 That is, if I show you a blueprint for a building, you probably want it to be immediately clear that it is a shopping centre, or a library. You will eventually want to know that it is glass-fronted and sandstone, but it's not the first thing you need to know. ^ Intent first!
 How do we structure our code so we reveal the intent as quickly as possible? We'll come back to this.
+
+---
+
+## UML? Not quite
+
+^ Some people might be thinking a nice UML diagram is a blueprint. At some level of abstraction it is, but it has problems: generally not living and rarely reflective of the final design (IMO). More importantly, few software engineers really understand them; mostly ignore them. They don't give that immediate insight we want.
+
+![](UML.png)
+
+---
+
+## BDD, Unit Tests? Maybe
+
+^ Specs (BBD, good unit tests) are certainly blueprint-ish, at a lower level of abstraction. They provide valuable knowledge. Use them! But maybe there's something else too.
+
+![](cucumber.jpg)
 
 ---
 
@@ -112,6 +151,7 @@ Tying the essence of our system, the Domain logic, to anything else other than m
 ## Solution: Ports & Adapters
 
 ^ Separate code on the inside (business logic) from code on the outside (external entities), without allowing the inside to have any explicit knowledge of the outside. That is, the web, UI, DB etc can depend on the business logic, but the business logic knows nothing about the external entities driving it or that it is driving.
+The "Adding animals" feature of our animal shelter does not need to know where that request originated. It does not need to know about the final storage mechanism.
 
 ![inline 85%](portsadapters.png)
 
@@ -122,9 +162,42 @@ Tying the essence of our system, the Domain logic, to anything else other than m
 ^ They allow the inside to express how external entities can interact with them, purely in domain terms.
 Think of this like publishing an API: "Speak to me using these messages, with this kind of data that I understand"
 In Java or C#, that might look like an Interface. In Objective-C, a protocol. In a more dynamic language, it might just be the kinds of message to which  an object or function on the inside would respond.
-The types and names used are part of the protocol/message, but also consider error codes, communication patterns, rate limits, etc
+
 
 ![](nice-port.jpg)
+
+---
+
+## Protocol components
+
+- Name/address of message
+- Types/names of params
+- Return types
+- Error codes/signals
+- Rate limits
+- Communication patterns (async? Bursty? )
+
+^ The types and names used are part of the protocol/message, but also consider error codes, communication patterns, rate limits, etc
+
+---
+
+## Port Example - Adding Animals
+
+```java
+interface AddAnimal {
+	
+	Errorable<Animal> add(UnsavedAnimal animal);
+
+	...
+
+}
+
+```
+
+^ Just a fairly plain interface for a create operation. What it lacks is any knowledge of the outside world. No HTTP requests or MQ, no Spring, Hibernate etc. All of the types mentioned are pure and clean.
+Just "Here is how you interact with me, if you wish."
+Think about what this is NOT doing: it's not dealing with the web, Json/xml etc
+
 
 ---
 
@@ -139,16 +212,56 @@ Consider giving each feature (bounded context) its own inner hexagon
 
 ---
 
+## Adapters Example
+
+```java
+class AddAnimalController {
+	private AddAnimals addAnimals;
+	...
+	@Put("/animals")
+	public void addAnimal(Request request, Response response) {
+		UnsavedAnimal unsavedAnimal = animalFromFormData(request);
+		Errorable<Animal> savedAnimal = addAnimals.add(unsavedAnimal);
+		if(savedAnimal.isErrorFree()) {
+			response.status(OK).with(savedAnimal.unwrap());
+		} else {
+			...
+		}
+	}
+
+	...
+}
+```
+
+^ Don't too hung up on the syntax here. This MVC-style adapter:
+- knows something about web artifacts(Request, Response).
+- Knows about the request format (JSON, form data etc) and deals with it
+- Hides those details from the port it knows it has to use.
+- Turns domain responses back into web responses.
+
+---
+
+# Separating domain logic from external entities
+
+^ Just to reiterate, that's our aim here.
+
+
+---
+
 ## Worked example - Animal Shelter
 
 - Adding animals
 - Fostering details
 - Adoption lists
 - Healthcare management
-- Follow-up visists
+- Follow-up visits
 - Letting people know new animals are up for adoption
 
 ^ Our domain is adding animals, taking fostering details, maintaining a list of who has adopted an animal, managing healthcare, doing follow-up visits, letting people know about new animals that are up for adoption
+
+---
+
+![inline 85%](portsadapters.png)
 
 ---
 
@@ -215,14 +328,23 @@ Put the INTENT and FEATURES at the top-level, not your technology.
 - [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) by Alistair Cockburn 
 - [Architecture, The Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) by "Uncle" Bob Martin
 - [Software is an Engineering Discipline](https://www.youtube.com/watch?v=zDEpeWQHtFU) by Glenn Vanderburg
+- [Are We Really Engineers?](https://vimeo.com/97273731) by Joe Wright
 
 ---
 
 ## Acknowledgements
 
 - CodeCraft logo by Gary Fleming (copyright CodeCraft)
+- [Gaoliang Bridge](Gaoliang_Bridge.jpg) by Hennesy~commonswiki
 - [Super Hexagon](http://superhexagon.com/) by [Terry Cavanagh](https://twitter.com/terrycavanagh), [CC-BY-SA-3.0](http://creativecommons.org/licenses/by-sa/3.0/)
 - [Entanglement](https://www.flickr.com/photos/dogbomb/526961087), [Simon Brass](https://www.flickr.com/photos/dogbomb/), [CC-BY-SA-2.0](https://creativecommons.org/licenses/by/2.0/)
 - Nice Port by Myrabella Photo: [Myrabella](https://commons.wikimedia.org/wiki/User:Myrabella) / [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page) / [CC-BY-SA-3.0](http://creativecommons.org/licenses/by-sa/3.0/) & [GFDL](https://en.wikipedia.org/wiki/GFDL)
 - [Rainer Knäpper](https://de.wikipedia.org/wiki/User:Smial), Adapter DVI to VGA, 15/05/06. [Free Art License](http://artlibre.org/licence/lal/en/)
+
+---
+
+## Acknowledgements (2)
+
 - [Mark Schellhase](https://commons.wikimedia.org/wiki/User:Mschel), Old Chain, [CC-BY-SA-3.0-Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [Sae1962](https://commons.wikimedia.org/wiki/User:Sae1962), UML, [CC-BY-SA-3.0-Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [viZZZual.com](https://www.flickr.com/photos/vizzzual-dot-com/), Cucumber, [CC-BY-2.0](https://creativecommons.org/licenses/by/2.0/)
