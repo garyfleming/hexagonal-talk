@@ -12,15 +12,10 @@ I'm also including the further reading and acknowledgements below, for your conv
 
 ## TODO
 
-- How UML doesn't work as blueprints: disconnected from source, usually out of date, not living.
-- Unit tests, cucumber specs etc form another part of blueprints
 - Add in parts to explain cross cutting domain entities vs bounded context entities
 - Possibly talk a little about DDD and bounded contexts
 - Relate to Dependency Inversion Principle
 - Explain how it doesn't necessarily mean more code
-- Bonus: caching -- obvious where it fits: the edges.
-- Bonus: feature toggling?
-- Be explicit about what actions can take after hearing the principles
 
 
 ---
