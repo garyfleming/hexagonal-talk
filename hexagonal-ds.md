@@ -1,12 +1,14 @@
 # Blueprints & Hexagons
 
-^ Going to cover two ideas that I was introduced to around the same time. These ideas help solve a number of structural problems in codebases as they get larger. Nothing particularly language or technology specific in this talk.
+^ Going to cover two ideas that I was introduced to around the same time. These ideas help solve a number of structural problems in codebases as they get larger. Very little that is particularly language or technology specific in this talk; the few pieces that are should be understandable to most technologists.
 
 ---
 
 ## Who am I?
 
 @garyfleming
+
+github.com/garyfleming/hexagonal-talk
 
 ^ Software & Agile Consultant, Software Developer for a long time.
 
@@ -45,6 +47,13 @@ Making the domain obvious over time gets harder - What is the intent of software
 ^ As coupling increases it's harder to test at all levels. 
 Unit tests have more fixtures and set-up.
 Integration tests need more of the stack, get slower over time.
+
+---
+
+## Result: Fear, Uncertainty Doubt
+
+^ Leads to million-line codebases that take ages to change because of the fear of those changes.
+No idea how far a change will ripple.
 
 ---
 
@@ -95,7 +104,7 @@ To be clear, I don't want to pick on rails. Other frameworks and technologies ar
 
 ^ Top-level blueprint of a church, say, screams intent.
 Top-level of software projects scream technology.
-An earlier talk I'd seen by someone else (Glenn Vanderburg?), had argued that if we were going to use the civil engineering metaphor for our software, that we should assign the correct roles: we are the architects/designers, the compilers/interpreters are the builders, and the binaries are the end product.
+An earlier talk I'd seen by Glenn Vanderburg, had argued that if we were going to use the civil engineering metaphor for our software, that we should assign the correct roles: we are the architects/designers, the compilers/interpreters are the builders, and the binaries are the end product.
 Through this lens, it is obvious that the artifacts that we produce are essentially blueprints. The purpose of blueprints is to show, at varying levels of abstraction, what it is we're trying to build (and how); but not the materials used (not initially, anyway).
 That is, if I show you a blueprint for a building, you probably want it to be immediately clear that it is a shopping centre, or a library. You will eventually want to know that it is glass-fronted and sandstone, but it's not the first thing you need to know. ^ Intent first!
 How do we structure our code so we reveal the intent as quickly as possible? We'll come back to this.
@@ -121,7 +130,7 @@ How do we structure our code so we reveal the intent as quickly as possible? We'
 ## Idea 2: Hexagonal Architecture
 
 ^ Named by Alistair Cockburn (also ports & adapter), it's a way of building adaptable, maintainable, testable systems.
-Similar ideas: onion architecture, clean architecture. I'll be using these interchangeably.
+Similar ideas: onion architecture, clean architecture, life preserver. I'll be using these interchangeably.
 
 ![](Super_Hexagon.png)
 
@@ -144,7 +153,8 @@ Same with webapps, mail servers, other systems etc.
 
 ^ Cockburn realised that the common problems here are caused by "the entanglement between business logic and the interaction with external entities"
 Those external entities take lots of forms: DBs, the web, SMTP, other systems, libraries and frameworks that are outwith our control (and many that are within).
-Tying the essence of our system, the Domain logic, to anything else other than more domain logic is the root cause for many of the issues we say earlier.
+Anything with I/O, most frameworks, some domain logic.
+Tying the essence of our system, the Domain logic, to anything else other than more domain logic is the root cause for many of the issues we saw earlier.
 
 ---
 
@@ -157,7 +167,17 @@ The "Adding animals" feature of our animal shelter does not need to know where t
 
 ---
 
-## Ports
+# Inside: Hexagons
+
+^ Domain logic, business rules, etc that represent a feature or capability within the system.
+Pure, clean.  No frameworks. No knowledge of the outside world.
+Internally consistent. Validated etc.
+
+![inline](single-hexagon.png)
+
+---
+
+## Edges: Ports
 
 ^ They allow the inside to express how external entities can interact with them, purely in domain terms.
 Think of this like publishing an API: "Speak to me using these messages, with this kind of data that I understand"
@@ -201,7 +221,7 @@ Think about what this is NOT doing: it's not dealing with the web, Json/xml etc
 
 ---
 
-# Adapters
+# Outside: Adapters
 
 ^ Obviously, these external entities don't speak the internal domain language: webapps speak HTTP, Databases have their own supported types, so we need to write adapters that convert messages between the style of the port and the external entity.
 Small and specific.
@@ -215,7 +235,7 @@ Consider giving each feature (bounded context) its own inner hexagon
 ## Adapters Example
 
 ```java
-class AddAnimalController {
+class AnimalController {
 	private AddAnimals addAnimals;
 	...
 	@Put("/animals")
@@ -239,12 +259,6 @@ class AddAnimalController {
 - Hides those details from the port it knows it has to use.
 - Turns domain responses back into web responses.
 
----
-
-# Separating domain logic from external entities
-
-^ Just to reiterate, that's our aim here.
-
 
 ---
 
@@ -259,9 +273,6 @@ class AddAnimalController {
 
 ^ Our domain is adding animals, taking fostering details, maintaining a list of who has adopted an animal, managing healthcare, doing follow-up visits, letting people know about new animals that are up for adoption
 
----
-
-![inline 85%](portsadapters.png)
 
 ---
 
@@ -300,10 +311,23 @@ In Hexagonal, it's obvious: you do it as messages enter the ports. By checking f
 
 ---
 
+## Bonus: Caching
+
+^ Many systems don't seem to know where caches should live, and try to cram them in lots of places. If you have a port for querying for some information based on some params, then it can be fairly natural to have your cache decorate the port. Not always, but often. (Consider, though, how invalidation works)
+
+---
+
 ## Bonus: Microservices
 
 ^ If we start with a monolith and want to move to microservices, it helps if we've already split our code up into isolated features that don't know much about the environment in which they are runing, like Hexagonal. Message/protocol based isolation via the ports can easily just send over HTTP etc.
 Not a panacea, but a good start.
+
+---
+
+## Bonus: Feature Toggling
+
+^ If you want to experiment with new implementations then some kinds of feature toggles are easily enabled within this architecture; particularly those related to switching providers on the outside (new GUI, new DB etc).
+
 
 ---
 
@@ -329,6 +353,7 @@ Put the INTENT and FEATURES at the top-level, not your technology.
 - [Architecture, The Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) by "Uncle" Bob Martin
 - [Software is an Engineering Discipline](https://www.youtube.com/watch?v=zDEpeWQHtFU) by Glenn Vanderburg
 - [Are We Really Engineers?](https://vimeo.com/97273731) by Joe Wright
+- [https://github.com/garyfleming/hexagonal-talk](https://github.com/garyfleming/hexagonal-talk) by me (this talk)
 
 ---
 
