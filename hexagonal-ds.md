@@ -294,13 +294,37 @@ Focus on the ports: the business logic defines them, completely free of any know
 # Problems we've solved?
 
 ## Coupling
-## Organisation
-## Testing
 
 ^ Coupling doesn't happen: the inside explicitly does not know about the outside. It doesn't have dependencies.
 We create a clear protocol for how to speak to the inside and then anything can do so.
-Organisation is clear: the domain logic exists over one or more modules, named for the part of the domain they provide ports with which to interact. The external entity code (adapters) exist in one or more modules named for the the port they interact act with and how (database-animal-store, message-queue-animal-store).
-Testing is easier: unit tests don't have external dependencies to mock/fake, integration tests have very clear and explicit boundaries, you may want an end-to-end test but that'll usually just be checking that the glue code works rather than exercising business logic.
+
+---
+
+# Problems we've solved?
+
+## Organisation
+
+^ Organisation is clear: the domain logic exists over one or more modules, named for the part of the domain they provide ports with which to interact. The external entity code (adapters) exist in one or more modules named for the the port they interact act with and how (database-animal-store, message-queue-animal-store).
+
+---
+
+# Problems we've solved?
+
+## Testing
+
+^ Testing is easier: unit tests don't have external dependencies to mock/fake, integration tests have very clear and explicit boundaries, you may want an end-to-end test but that'll usually just be checking that the glue code works rather than exercising business logic.
+
+---
+
+# Pro-flexibility, not anti-framework
+
+---
+
+# Less complexity, not more
+
+---
+
+# The same amount of code, just in the right place
 
 ---
 
@@ -347,16 +371,6 @@ Put the INTENT and FEATURES at the top-level, not your technology.
 
 ---
 
-## Learn More
-
-- [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) by Alistair Cockburn 
-- [Architecture, The Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) by "Uncle" Bob Martin
-- [Software is an Engineering Discipline](https://www.youtube.com/watch?v=zDEpeWQHtFU) by Glenn Vanderburg
-- [Are We Really Engineers?](https://vimeo.com/97273731) by Joe Wright
-- [https://github.com/garyfleming/hexagonal-talk](https://github.com/garyfleming/hexagonal-talk) by me (this talk)
-
----
-
 ## Acknowledgements
 
 - CodeCraft logo by Gary Fleming (copyright CodeCraft)
@@ -373,3 +387,13 @@ Put the INTENT and FEATURES at the top-level, not your technology.
 - [Mark Schellhase](https://commons.wikimedia.org/wiki/User:Mschel), Old Chain, [CC-BY-SA-3.0-Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
 - [Sae1962](https://commons.wikimedia.org/wiki/User:Sae1962), UML, [CC-BY-SA-3.0-Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
 - [viZZZual.com](https://www.flickr.com/photos/vizzzual-dot-com/), Cucumber, [CC-BY-2.0](https://creativecommons.org/licenses/by/2.0/)
+
+---
+
+## Learn More
+
+- [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) by Alistair Cockburn 
+- [Architecture, The Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) by "Uncle" Bob Martin
+- [Software is an Engineering Discipline](https://www.youtube.com/watch?v=zDEpeWQHtFU) by Glenn Vanderburg
+- [Are We Really Engineers?](https://vimeo.com/97273731) by Joe Wright
+- [https://github.com/garyfleming/hexagonal-talk](https://github.com/garyfleming/hexagonal-talk) by me (this talk)
