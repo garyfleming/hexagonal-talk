@@ -172,6 +172,8 @@ The "Adding animals" feature of our animal shelter does not need to know where t
 ^ Domain logic, business rules, etc that represent a feature or capability within the system.
 Pure, clean.  No frameworks. No knowledge of the outside world.
 Internally consistent. Validated etc.
+Hexagons then are at the heart containing the domain logic/business rules, free from libraries and dependencies
+Consider giving each feature (bounded context) its own inner hexagon
 
 ![inline](single-hexagon.png)
 
@@ -193,7 +195,7 @@ In Java or C#, that might look like an Interface. In Objective-C, a protocol. In
 - Name/address of message
 - Types/names of params
 - Return types
-- Error codes/signals
+- Error codes/signals/exceptions
 - Rate limits
 - Communication patterns (async? Bursty? )
 
@@ -225,8 +227,7 @@ Think about what this is NOT doing: it's not dealing with the web, Json/xml etc
 
 ^ Obviously, these external entities don't speak the internal domain language: webapps speak HTTP, Databases have their own supported types, so we need to write adapters that convert messages between the style of the port and the external entity.
 Small and specific.
-Hexagons then are at the heart containing the domain logic/business rules, free from libraries and dependencies
-Consider giving each feature (bounded context) its own inner hexagon
+
 
 ![](Adapter.jpg)
 
