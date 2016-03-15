@@ -15,7 +15,11 @@ I'm also including the further reading and acknowledgements below, for your conv
 - Add in parts to explain cross cutting domain entities vs bounded context entities
 - Possibly talk a little about DDD and bounded contexts
 - Relate to Dependency Inversion Principle
-- Explain how it doesn't necessarily mean more code
+- Talk about leaky abstractions and performance. Doesn't matter for most, possibly destructure once an area is proven to be an issue
+- Explain how to apply to legacy systems (branch by abstraction)
+- Cross-cutting concerns like Transactions
+- Wiring hexagons and adapters together using DI i.e. build flexibly, bind late
+- Convince other people to structure and separate, rather than that initial velocity boost you get from Rails/Spring Boot etc. -> Remind them of past pain. Possibly start with Rails/Boot but have triggers for structuring.
 
 
 ---
