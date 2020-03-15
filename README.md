@@ -10,6 +10,16 @@ If you don't have access to Deckset but still want the visuals alongside the not
 
 I'm also including the further reading and acknowledgements below, for your convenience.
 
+## Abstract
+
+Architecture. Tests. Design. These sound like three separate aspects of your applications, but really they're all entwined.
+
+## Key Takeaways
+
+* You'll learn how to design applications that are easy to maintain and change.
+* You'll find out how your testing strategy and architecture strategy can and should be entwined.
+* You'll leave knowing how to structure your code better, at every level.
+
 ## TODO
 
 - Add in parts to explain cross cutting domain entities vs bounded context entities
@@ -26,7 +36,7 @@ I'm also including the further reading and acknowledgements below, for your conv
 
 ## Learn More
 
-- [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) by Alistair Cockburn 
+- [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) by Alistair Cockburn
 - [Architecture, The Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) by "Uncle" Bob Martin
 - [Software is an Engineering Discipline](https://www.youtube.com/watch?v=zDEpeWQHtFU) by Glenn Vanderburg
 
